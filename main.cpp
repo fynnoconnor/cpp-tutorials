@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <sstream>
 
 int main()
 {   
@@ -8,6 +9,27 @@ int main()
 
     sf::Clock clock;
 
+
+    int score = 0;
+    sf::Text messageText;
+    sf::Text scoreText;
+    // We need to choose a font
+    sf::Font font;
+    font.loadFromFile("fonts/KOMIKAP_.ttf");
+    // Set the font to our message
+    messageText.setFont(font);
+    scoreText.setFont(font);
+    // Assign the actual message
+    messageText.setString("Press Enter to start!");
+    scoreText.setString("Score = 0");
+    // Make it really big
+    messageText.setCharacterSize(75);
+    scoreText.setCharacterSize(100);
+    messageText.setFillColor(sf::Color::White);
+    scoreText.setFillColor(sf::Color::White);  
+    sf::FloatRect textRect = messageText.getLocalBounds();
+    messageText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    messageText.setPosition(width / 2.0f, height / 2.0f);
 
     // Sprites and textures
     // Create a texture to hold a graphic on the GPU
@@ -89,6 +111,9 @@ int main()
                 spriteBee.setPosition(2000, beeHeight);
             }
         }
+        std::string scoreString = "Score = ";
+        scoreText.setString(scoreString + std::to_string(score));
+        score++;
         
 
 
@@ -100,6 +125,10 @@ int main()
         window.draw(player);
         window.draw(spriteTree);
         window.draw(spriteBee);
+        window.draw(scoreText);
+        if (paused){
+            window.draw(messageText);
+        }
 
         window.display();
     }
